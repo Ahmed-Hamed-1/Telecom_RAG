@@ -55,7 +55,28 @@ class RAGService:
 
         # Generate Response AIMessage
         ai_message = rag_chain.invoke(customer_ticket)
-        response_text = ai_message.content if hasattr(ai_message, "content") else str(ai_message)
+        
+        # Extract text content safely whether returned as str or list of block parts
+        raw_content = ai_message.content if hasattr(ai_message, "content") else str(ai_message)
+        if isinstance(raw_content, str):
+            response_text = raw_content
+        elif isinstance(raw_content, list):
+            text_parts = []
+            for item in raw_content:
+                if isinstance(item, str):
+                    text_parts.append(item)
+                elif isinstance(item, dict):
+                    if item.get("type") == "text" and "text" in item:
+                        text_parts.append(item["text"])
+                    elif "text" in item:
+                        text_parts.append(item["text"])
+                elif hasattr(item, "text"):
+                    text_parts.append(getattr(item, "text"))
+                else:
+                    text_parts.append(str(item))
+            response_text = "".join(text_parts)
+        else:
+            response_text = str(raw_content)
 
         # Extract Token Usage Telemetry
         usage = getattr(ai_message, "usage_metadata", None) or {}

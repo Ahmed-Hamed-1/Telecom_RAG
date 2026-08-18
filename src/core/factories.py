@@ -28,9 +28,10 @@ class ModelFactory:
     @lru_cache(maxsize=1)
     def get_llm():
         if settings.llm_provider.lower() == "gemini":
-            logger.info(f"Initializing LLM (Provider: {settings.llm_provider})...")
+            logger.info(f"Initializing LLM (Provider: {settings.llm_provider}, Model: {settings.llm_model_name})...")
             return ChatGoogleGenerativeAI(
                 model=settings.llm_model_name,
+                google_api_key=settings.google_api_key,
                 temperature=settings.temperature
             )
         else:
