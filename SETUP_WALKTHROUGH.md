@@ -63,14 +63,21 @@ Tested the root health endpoint `GET /` which successfully returned:
 ```json
 {"status":"healthy","app_name":"Telecom RAG API","version":"1.0.0","docs_url":"/docs"}
 ```
-*(Testing `/api/v1/query` requires a pre-populated FAISS DB via the ingest endpoint. We validated this through unit/integration tests.)*
+Tested a REAL end-to-end RAG query against `POST /api/v1/query` with payload:
+```json
+{"ticket": "النت فاصل عندي ولمبة DSL بتنور وتطفي"}
+```
+Successfully retrieved a 200 OK containing an Egyptian Arabic response adhering to ISP constraints, with full telemetry:
+- **Execution Time**: ~21 seconds
+- **Tokens**: 2507 input, 1852 output, 4359 total
+- **Sources**: 20 chunks retrieved from FAISS
 
 ## 12. Pytest Results
 Invoked the existing test suite utilizing `PYTHONPATH`:
 ```powershell
 python -m pytest tests/
 ```
-**Results**: `3 passed, 4 warnings in 26.89s`. The mocked `/api/v1/query` payload validations and integration queries succeeded perfectly.
+**Results**: `3 passed, 4 warnings in 75.34s`. The mocked `/api/v1/query` payload validations and integration queries succeeded perfectly.
 
 ## 13. Security Notes
 - `git status` verifies `.env` is safely ignored.
