@@ -101,3 +101,6 @@ To run the server live:
 2. Configure your live `GOOGLE_API_KEY` inside `.env`
 3. Boot the server: `python main.py`
 4. Go to `http://localhost:8000/docs` to ingest documents and perform queries.
+
+## Assignment 4 - Log Evidence
+The file `logs/app_startup_snippet.log` contains sanitized evidence of the real FastAPI server startup, model warmup, FAISS index loading, and a successful end-to-end RAG query being processed successfully, as required for the assignment deliverable.

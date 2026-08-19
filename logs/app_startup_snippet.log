@@ -1,0 +1,11 @@
+[2026-08-19 23:41:30,915] [INFO] [RAG:main.py:12] - === Starting Telecom RAG API v1.0.0 ===
+[2026-08-19 23:41:30,915] [INFO] [RAG:main.py:13] - Warming up ML Models (Singleton Embeddings & LLM)...
+[2026-08-19 23:41:30,915] [INFO] [RAG:database.py:36] - Loading FAISS index from disk 'faiss_telecom_index' into memory...
+[2026-08-19 23:41:31,318] [INFO] [RAG:main.py:20] - ✅ FAISS Vector Index pre-loaded into memory.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:6590 - "GET / HTTP/1.1" 200 OK
+[2026-08-19 23:41:43,967] [INFO] [RAG:rag_service.py:39] - Processing customer ticket query: النت فاصل عندي ولمبة DSL بتنور وتطفي...
+[2026-08-19 23:41:43,967] [INFO] [RAG:database.py:27] - ⚡ Using in-memory cached FAISS index (0ms disk latency).
+[2026-08-19 23:41:44,109] [INFO] [RAG:rag_service.py:47] - Retrieved 20 relevant chunks from FAISS.
+[2026-08-19 23:42:11,748] [INFO] [RAG:rag_service.py:95] - RAG answer generated in 27.78s. Tokens: Input=2507, Output=1497, Total=4004
+INFO:     127.0.0.1:6591 - "POST /api/v1/query HTTP/1.1" 200 OK
