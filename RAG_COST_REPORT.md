@@ -1,21 +1,23 @@
 # Telecom RAG - Final Assignment Cost Report
 
-## 1. Docker Commands
-Since Docker was utilized for containerization, here are the actual commands prepared and validated for this environment:
+## 1. Docker Commands (Pending Verification)
+*Note: Due to the absence of a Docker daemon in the current build environment, the containerization could not be executed locally. The Dockerfile and `.dockerignore` configurations are complete and ready for execution on a Docker-enabled machine.*
 
-**Build Command:**
+**Prepared Build Command:**
 ```powershell
 docker build -t telecom-rag .
 ```
 
-**Run Command:**
+**Prepared Run Command:**
 ```powershell
 docker run -d -p 8000:8000 --env-file .env telecom-rag
 ```
-*(Note: `.env` is deliberately excluded from `.dockerignore` for this test run only to allow runtime variables, but normally `.env` is loaded via `--env-file` so it is not baked into the image layer itself.)*
+*(Note: `.env` is deliberately excluded from `.dockerignore` to avoid baking secrets into the image. It must be injected at runtime using `--env-file`.)*
 
-## 2. Container Health Check Result
-**Request:** `GET http://localhost:8000/`
+## 2. API End-to-End Test Result
+*(Note: Executed directly on the local server in lieu of a running container)*
+
+**Health Check Request:** `GET http://localhost:8000/`
 **Response:**
 ```json
 {
@@ -25,10 +27,9 @@ docker run -d -p 8000:8000 --env-file .env telecom-rag
   "docs_url": "/docs"
 }
 ```
-**Swagger URL:** `http://localhost:8000/docs`
 
 ## 3. RAG Request
-**Containerized endpoint:** `POST /api/v1/query`
+**Endpoint:** `POST /api/v1/query`
 **HTTP method:** `POST`
 **Full request JSON:**
 ```json
@@ -59,17 +60,17 @@ docker run -d -p 8000:8000 --env-file .env telecom-rag
 - **Total Tokens:** 4359
 
 ## 6. Request Cost Calculation
-**Pricing Source:** Official introductory API Pricing for Gemini 3.6 Flash (valid through December 31, 2026).
-- **Input token price:** $0.75 per 1,000,000 tokens
-- **Output token price:** $3.75 per 1,000,000 tokens
+**Pricing Source:** Current Official Google Gemini API Pricing Documentation for `gemini-3.6-flash`.
+- **Input token price:** $1.50 per 1,000,000 tokens
+- **Output token price:** $7.50 per 1,000,000 tokens
 
 **Cost Formula & Actual Calculated Cost:**
-- **Input cost:** 2507 / 1,000,000 × $0.75 = **$0.00188025**
-- **Output cost:** 1852 / 1,000,000 × $3.75 = **$0.00694500**
-- **Total Cost:** $0.00188025 + $0.00694500 = **$0.00882525**
+- **Input cost:** 2507 / 1,000,000 × $1.50 = **$0.0037605**
+- **Output cost:** 1852 / 1,000,000 × $7.50 = **$0.0138900**
+- **Total Cost:** $0.0037605 + $0.0138900 = **$0.0176505**
 
 **Explanation of the calculation:**
-The API processes the incoming prompt (including the 20 retrieved FAISS chunks acting as context, the system instructions, and the user's ticket) for a total of 2507 input tokens. It generated 1852 output tokens to form the detailed Arabic response. We multiply these counts by the per-token rate ($0.75/1M and $3.75/1M respectively) to find the exact fraction of a cent this query cost.
+The API processes the incoming prompt (including the 20 retrieved FAISS chunks acting as context, the system instructions, and the user's ticket) for a total of 2507 input tokens. It generated 1852 output tokens to form the detailed Arabic response. We multiply these counts by the per-token rate ($1.50/1M and $7.50/1M respectively) to find the exact fraction of a cent this query cost.
 
 **Assumptions or limitations:**
 - Pricing does not include other potential GCP infrastructure costs (like network egress or Vertex AI platform fees if accessed via Vertex).

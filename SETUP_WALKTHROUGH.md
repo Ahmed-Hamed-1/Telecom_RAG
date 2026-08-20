@@ -108,7 +108,7 @@ The file `logs/app_startup_snippet.log` contains sanitized evidence of the real 
 # Final Assignment - Docker + RAG Cost + CI
 
 - **Docker Setup**: The `Dockerfile` packages the FastAPI application into a `python:3.12-slim` image. `.dockerignore` properly excludes secrets and local environments while retaining the `faiss_telecom_index/` to allow RAG operations inside the container.
-- **Container Startup**: The image can be built via `docker build -t telecom-rag .` and the container runs with `docker run -d -p 8000:8000 --env-file .env telecom-rag`, ensuring the API key is passed securely at runtime.
-- **Real RAG Test**: A real RAG query against `POST /api/v1/query` utilizing `gemini-3.6-flash` returned successfully with HTTP 200, successfully querying the in-memory FAISS index within the container context.
-- **Cost Calculation**: For the 4,359 total tokens processed during the real query, the calculated cost is **$0.00882525**, using the introductory pricing for the `gemini-3.6-flash` model. Full details and formulas are recorded in `RAG_COST_REPORT.md`.
+- **Docker Limitations**: Due to the absence of a Docker daemon in the current build environment, container execution could not be verified locally. The Docker configurations (`Dockerfile`, `.dockerignore`, build/run commands) are fully prepared for execution on a Docker-enabled machine.
+- **Real RAG Test**: A real RAG query against `POST /api/v1/query` utilizing `gemini-3.6-flash` (executed on the local server in lieu of Docker) returned successfully with HTTP 200, querying the in-memory FAISS index.
+- **Cost Calculation**: For the 4,359 total tokens processed during the real query, the calculated cost is **$0.0176505**, using the current official API pricing for the `gemini-3.6-flash` model ($1.50/1M input, $7.50/1M output). Full details and formulas are recorded in `RAG_COST_REPORT.md`.
 - **CI Workflow**: A GitHub Actions CI pipeline is implemented in `.github/workflows/ci.yml`. It triggers on push to `main`, installs dependencies, and runs `pytest tests/` securely utilizing a dummy token to ensure the application builds without exposing secrets.
