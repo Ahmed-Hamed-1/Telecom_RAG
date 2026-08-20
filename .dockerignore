@@ -7,3 +7,6 @@ __pycache__/
 tests/
 pytest.ini
 Telecom_Internal_KB.txt
+.env
+app.log
+logs/
